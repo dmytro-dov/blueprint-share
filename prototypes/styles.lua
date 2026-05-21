@@ -18,3 +18,10 @@ data.raw["gui-style"].default["blueprint_share_description_empty"] = {
   single_line = true,
   horizontally_squashable = "on",
 }
+
+data.raw["gui-style"].default["blueprint_share_time_ago"] = {
+  type = "label_style",
+  parent = "grey_label",
+  single_line = true,
+  horizontally_squashable = "off",
+}

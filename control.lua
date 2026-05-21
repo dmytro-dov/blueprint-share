@@ -17,6 +17,18 @@ local function init_player(player)
   storage.players[player.index] = storage.players[player.index] or {}
   local player_storage = storage.players[player.index]
   player_storage.inbox_inventory = player_storage.inbox_inventory or game.create_inventory(Settings.inbox_capacity(player))
+  if not player_storage.inbox_received_ticks then
+    player_storage.inbox_received_ticks = {}
+    local inventory = player_storage.inbox_inventory
+    -- Existing inbox items get current time as their received tick
+    if inventory and inventory.valid then
+      for slot = 1, #inventory do
+        if inventory[slot].valid_for_read then
+          player_storage.inbox_received_ticks[slot] = game.tick
+        end
+      end
+    end
+  end
   Inbox.init(player)
 end
 
@@ -31,6 +43,7 @@ script.on_configuration_changed(function()
   storage.players = storage.players or {}
   for _, player in pairs(game.players) do
     init_player(player)
+    Inbox.refresh(player)
   end
 end)
 

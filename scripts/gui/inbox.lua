@@ -23,11 +23,13 @@ local consts = {
         slot_prefix = "blueprint-share-gui-inbox-flow-slot_",
         titlebar = "blueprint-share-gui-inbox-flow-titlebar",
         item_info = "blueprint-share-gui-inbox-flow-item_info",
+        header = "blueprint-share-gui-inbox-flow-header",
       },
       label = {
         title = "blueprint-share-gui-inbox-label-title",
         description = "blueprint-share-gui-inbox-label-description",
         transfer = "blueprint-share-gui-inbox-label-transfer",
+        time_ago = "blueprint-share-gui-inbox-label-time_ago",
       },
       tag = {
         slot = "blueprint-share-gui-inbox-tag-slot",
@@ -66,13 +68,21 @@ local sizes = {
     padding = 8,
     separator = 4,
   },
+  time_label = {
+    minimal_width = 18,
+  },
 }
+
+local TICKS_PER_MINUTE = 60 * 60
+local TICKS_PER_HOUR = 60 * TICKS_PER_MINUTE
+local TICKS_PER_DAY = 24 * TICKS_PER_HOUR
 
 local styles = {
   label = {
     title = "blueprint_share_title",
     empty_description = "blueprint_share_description_empty",
     description = "blueprint_share_description",
+    time_ago = "blueprint_share_time_ago",
   },
 }
 
@@ -89,6 +99,17 @@ local function get_transfer_frame(player)
   if frame then
     return frame[consts.gui.inbox.frame.transfer]
   end
+end
+
+local function format_time_ago(diff)
+  if diff >= TICKS_PER_DAY then
+    return {"blueprint-share.gui-inbox-time-days", math.floor(diff / TICKS_PER_DAY)}
+  elseif diff >= TICKS_PER_HOUR then
+    return {"blueprint-share.gui-inbox-time-hours", math.floor(diff / TICKS_PER_HOUR)}
+  elseif diff >= TICKS_PER_MINUTE then
+    return {"blueprint-share.gui-inbox-time-minutes", math.floor(diff / TICKS_PER_MINUTE)}
+  end
+  return {"blueprint-share.gui-inbox-time-just-now"}
 end
 
 local function estimated_frame_height(slot_count)
@@ -203,12 +224,30 @@ local function build_frame(player)
     labels_flow.style.vertically_stretchable = true
     labels_flow.style.vertical_align = "center"
 
-    labels_flow.add {
+    local header_flow = labels_flow.add {
+      type = "flow",
+      direction = "horizontal",
+      name = consts.gui.inbox.flow.header,
+    }
+
+    header_flow.add {
       type = "label",
       name = consts.gui.inbox.label.title,
       style = styles.label.title,
       caption = {"blueprint-share.gui-empty"},
     }
+
+    local spacer = header_flow.add {
+      type = "empty-widget",
+    }
+    spacer.style.horizontally_stretchable = true
+
+    local time_label = header_flow.add {
+      type = "label",
+      name = consts.gui.inbox.label.time_ago,
+      style = styles.label.time_ago,
+    }
+    time_label.style.minimal_width = sizes.time_label.minimal_width
 
     labels_flow.add {
       type = "label",
@@ -245,13 +284,15 @@ local function build_transfer_frame(player)
   progress_bar.style.horizontally_stretchable = true
 end
 
-local function compact(inventory)
+local function compact(inventory, received_ticks)
   local size = #inventory
   local write = size
   for read = size, 1, -1 do
     if inventory[read].valid_for_read then
       if read ~= write then
         inventory[write].swap_stack(inventory[read])
+        received_ticks[write] = received_ticks[read]
+        received_ticks[read] = nil
       end
       write = write - 1
     end
@@ -268,13 +309,16 @@ local function update(player)
   local inventory = player_storage.inbox_inventory
   if not inventory or not inventory.valid then return end
 
+  local received_ticks = player_storage.inbox_received_ticks
   for slot = 1, #inventory do
     local stack = inventory[slot]
     local content = frame[consts.gui.inbox.frame.content][consts.gui.inbox.flow.slot(slot)]
     local slot_container = content[consts.gui.inbox.button.slot]
     local item_info_flow = content[consts.gui.inbox.flow.item_info]
-    local title_label = item_info_flow[consts.gui.inbox.label.title]
+    local header_flow = item_info_flow[consts.gui.inbox.flow.header]
+    local title_label = header_flow[consts.gui.inbox.label.title]
     local description_label = item_info_flow[consts.gui.inbox.label.description]
+    local time_label = header_flow[consts.gui.inbox.label.time_ago]
 
     if stack and stack.valid_for_read then
       InboxSlot.set_enabled(slot_container, true)
@@ -283,6 +327,7 @@ local function update(player)
       local title = (stack.label ~= "" and stack.label) or stack.prototype.localised_name
       title_label.caption = title
       title_label.visible = true
+      header_flow.visible = true
 
       local desc = ""
       local icons
@@ -305,13 +350,20 @@ local function update(player)
       description_label.style = styles.label.description
       InboxSlot.set_icons(slot_container, stack.name, icons)
       InboxSlot.set_tooltip(slot_container, Util.tooltip(title, desc, icons))
+
+      local received_tick = received_ticks[slot]
+      if received_tick then
+        time_label.caption = format_time_ago(game.tick - received_tick)
+      else
+        time_label.caption = {"blueprint-share.gui-inbox-time-just-now"}
+      end
     else
       InboxSlot.set_enabled(slot_container, false)
       InboxSlot.set_type(slot_container)
       InboxSlot.set_icons(slot_container, nil, nil)
       InboxSlot.set_tooltip(slot_container, nil)
       title_label.caption = ""
-      title_label.visible = false
+      header_flow.visible = false
       description_label.caption = {"blueprint-share.gui-empty"}
       description_label.visible = true
       description_label.style = styles.label.empty_description
@@ -348,6 +400,7 @@ local function resize(player, new_capacity)
   local inventory = player_storage.inbox_inventory
   if not (inventory and inventory.valid) then return end
 
+  local received_ticks = player_storage.inbox_received_ticks
   local old_capacity = #inventory
   local delta = new_capacity - old_capacity
   if delta == 0 then return end
@@ -358,16 +411,22 @@ local function resize(player, new_capacity)
     for i = new_capacity, 1, -1 do
       if i > delta then
         inventory[i].set_stack(inventory[i - delta])
+        received_ticks[i] = received_ticks[i - delta]
       else
         inventory[i].clear()
+        received_ticks[i] = nil
       end
     end
   elseif delta < 0 then
     for i = 1, new_capacity do
       inventory[i].set_stack(inventory[i - delta])
+      received_ticks[i] = received_ticks[i - delta]
     end
     -- Post-resize to truncate remaining duplicate slots
     inventory.resize(new_capacity)
+    for i = new_capacity + 1, old_capacity do
+      received_ticks[i] = nil
+    end
   end
 
   refresh(player)
@@ -389,6 +448,10 @@ function this.init(player)
   show_mod_gui_button(player, true)
 end
 
+function this.refresh(player)
+  refresh(player)
+end
+
 function this.cleanup(player)
   show_mod_gui_button(player, false)
 end
@@ -401,6 +464,8 @@ function this.process_payload(payload, player)
   
   local inventory = player_storage.inbox_inventory
   if not inventory or not inventory.valid then return end
+
+  local received_ticks = player_storage.inbox_received_ticks
 
   local size = #inventory
   if size == 0 then return end
@@ -417,10 +482,12 @@ function this.process_payload(payload, player)
   -- Import success
   for slot = 1, size - 1 do
     inventory[slot].set_stack(inventory[slot + 1])
+    received_ticks[slot] = received_ticks[slot + 1]
   end
 
   inventory[size].clear()
   inventory[size].set_stack(temp[1])
+  received_ticks[size] = game.tick
   temp.destroy()
 
   show(player, true)
@@ -488,8 +555,10 @@ function this.on_click(event)
     player.cursor_stack.set_stack(inventory[slot])
     player.cursor_stack_temporary = true
   elseif event.button == defines.mouse_button_type.right then
+    local received_ticks = player_storage.inbox_received_ticks
     inventory[slot].clear()
-    compact(inventory)
+    received_ticks[slot] = nil
+    compact(inventory, received_ticks)
   end
   update(player)
 end
