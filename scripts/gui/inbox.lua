@@ -326,7 +326,6 @@ local function update(player)
 
       local title = (stack.label ~= "" and stack.label) or stack.prototype.localised_name
       title_label.caption = title
-      title_label.visible = true
       header_flow.visible = true
 
       local desc = ""
