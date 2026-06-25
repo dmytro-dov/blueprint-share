@@ -4,7 +4,7 @@
 
 Send blueprints, blueprint books, deconstruction planners, and upgrade planners between two Factorio instances on the same machine, over localhost UDP. Handy when running a regular save and a map editor side-by-side.
 
-Requires Factorio **2.0** or newer.
+Requires Factorio **2.1** or newer.
 
 ![Demo](docs/demo2.gif)
 
