@@ -1,6 +1,7 @@
 .git
 .git/*
 .gitignore
+.gitmodules
 .github
 .github/*
 .vscode
@@ -19,3 +20,13 @@ docs
 docs/*
 tools
 tools/*
+*.kra
+*~
+*.svg
+examples
+examples/*
+tests
+tests/*
+.lua
+.lua/*
+thumbnail_background.png

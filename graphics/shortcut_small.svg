@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="1024"
-   height="1024"
-   viewBox="0 0 10.666667 10.666667"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
    sodipodi:docname="shortcut_small.svg"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="true"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.35355339"
-     inkscape:cx="131.52186"
-     inkscape:cy="1166.7262"
+     inkscape:zoom="11.313708"
+     inkscape:cx="2.8284271"
+     inkscape:cy="34.294679"
      inkscape:window-width="2560"
      inkscape:window-height="1412"
      inkscape:window-x="0"
@@ -199,7 +199,8 @@
      inkscape:label="x24"><g
        id="g10"
        inkscape:label="stroke"
-       style="fill:#ffffff;fill-opacity:1"><g
+       style="display:inline;fill:#ffffff;fill-opacity:1"
+       transform="scale(2.2499999)"><g
          id="g2"
          inkscape:label="top_left"
          style="fill:#ffffff;fill-opacity:1"><path
@@ -256,7 +257,7 @@
            x="5.1458335"
            y="-1.8750001" /></g></g><g
        id="g27"
-       transform="translate(-6.0000001)"
+       transform="matrix(-2.2499999,0,0,2.2499999,37.499999,-2.9625e-7)"
        inkscape:label="arrows"
        style="display:none;fill:#ffffff;fill-opacity:1"><path
          id="path5"
@@ -274,7 +275,7 @@
          inkscape:original-d="M 5.6666668,2.6666668 V 5.0000002 L 6.2735191,4.3931479 C 6.5238882,4.642124 6.6652766,4.9802445 6.6666669,5.3333335 6.6641695,5.9392852 6.2533833,6.4673517 5.6666668,6.6188357 V 7.9761558 C 6.9988938,7.8083118 7.9985252,6.6760912 8.0000002,5.3333335 7.9995913,4.626246 7.7183715,3.9482683 7.2181806,3.4484864 L 8.0000002,2.6666668 Z"
          inkscape:path-effect="#path-effect8-7;#path-effect9-0" /></g><g
        id="g13"
-       transform="matrix(-1,0,0,1,11.121244,0.0067139)"
+       transform="matrix(-2.2499999,0,0,2.2499999,25.022797,0.01510627)"
        inkscape:label="arrows_alt"
        style="display:inline"><path
          id="path3"

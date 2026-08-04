@@ -2,12 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="1008"
-   height="1008"
-   viewBox="0 0 10.5 10.5"
+   width="56"
+   height="56"
+   viewBox="0 0 56 56"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
    sodipodi:docname="shortcut.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="true"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.85933237"
-     inkscape:cx="139.64329"
-     inkscape:cy="741.85498"
+     inkscape:zoom="10.24"
+     inkscape:cx="5.5664063"
+     inkscape:cy="51.074219"
      inkscape:window-width="2560"
      inkscape:window-height="1412"
      inkscape:window-x="0"
@@ -35,14 +35,14 @@
      inkscape:current-layer="layer1"
      showguides="true">
     <sodipodi:guide
-       position="5.25,5.25"
+       position="56,28"
        orientation="0,1"
        id="guide397"
        inkscape:locked="false"
        inkscape:label=""
        inkscape:color="rgb(0,134,229)" />
     <sodipodi:guide
-       position="5.25,5.25"
+       position="28,0"
        orientation="-1,0"
        id="guide398"
        inkscape:locked="false"
@@ -381,7 +381,8 @@
      inkscape:label="foreground">
     <g
        id="stroke"
-       inkscape:label="stroke">
+       inkscape:label="stroke"
+       transform="scale(5.3333334)">
       <g
          id="g447"
          inkscape:label="corner"
@@ -456,9 +457,9 @@
     </g>
     <g
        id="arrows"
-       transform="translate(-6.0833335,-0.08333347)"
+       transform="matrix(5.3333334,0,0,5.3333409,-32.444447,-0.44444537)"
        inkscape:label="arrows"
-       style="display:none;fill:#ffffff;fill-opacity:1">
+       style="display:inline;fill:#ffffff;fill-opacity:1">
       <path
          id="path5"
          style="fill:#ffffff;fill-opacity:1;stroke-width:1.875;stroke-linecap:square;stroke-miterlimit:2;stroke-opacity:0.6;paint-order:markers fill stroke"
@@ -478,7 +479,7 @@
     </g>
     <g
        id="arrows_alt"
-       transform="translate(-5.717048,0.12581073)"
+       transform="matrix(5.3333334,0,0,5.3333409,-30.490924,0.67099194)"
        inkscape:label="arrows_alt"
        style="display:inline;fill:#ffffff;fill-opacity:1">
       <path

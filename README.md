@@ -1,4 +1,6 @@
-![Icon](thumbnail.png)
+
+![Latest Version](https://img.shields.io/factorio-mod-portal/v/blueprint-share) ![Last Updated](https://img.shields.io/factorio-mod-portal/last-updated/blueprint-share) ![Downloads](https://img.shields.io/factorio-mod-portal/dt/blueprint-share)
+![License](https://img.shields.io/github/license/dmytro-dovg/blueprint-share)
 
 # Blueprint Share
 
